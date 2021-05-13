@@ -1,0 +1,28 @@
+function [W_deriv, bias_deriv] = backpropagation(net, x, t, derivFunErr)
+    
+    W_deriv = {}
+    deltas = {}
+    bias_deriv = {}
+    %% FASE FORWARD-PROPAGATION
+    [a_, z_] = forward_step(net, x);
+    z_ = {x' z_{:}};
+    
+    %% FASE BACK-PROPAGATION (calcolo delta)
+    %Calcolo dela nodi di uscita
+    delta_out = net.deriv_func{end}(a_{end});
+    delta_out = delta_out .* derivFunErr(z_{end}, t);
+    deltas{net.n_layers-1} = delta_out;
+    W_deriv{net.n_layers-1} = delta_out * z_{end-1};
+    bias_deriv{net.layers-1} = delta_out;
+    for i=net.n_layers-2 : -1: 2
+        j = 0; %Questo indice serve per iterare sulle matrici W della rete
+        k = 1; %Questo indice serve per gli input a dei neuroni nei livelli
+        deltas{i} = net.weights{end-j}' * deltas{i+1};
+        deltas{i} = deltas{i} .* net.deriv_func{j}(a_{i});
+        W_deriv{i} = deltas{i} * z_{i-1};
+        bias_deriv{i} = deltas{i};
+        j = j + 1;
+    end
+    
+
+end
