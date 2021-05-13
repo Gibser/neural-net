@@ -1,4 +1,4 @@
-function [err, final_net, err_val] = learningPhase(net, N, x, t, x_val, errFuncDeriv, BATCH)
+function [err, final_net, err_val] = learningPhase(net, N, x, t, x_val, t_val, errFuncDeriv, BATCH)
 eta=0.1; %Learning rate e' un parametro che posso scegliere, e relativo alla regola di aggiornamento
          % scelta, ed è considerato un iper-parametro del processo di
          % learning. In genere passato come parametro alla funzione.
