@@ -5,7 +5,7 @@ function [W_deriv, bias_deriv] = backpropagation(net, x, t, derivFunErr)
     bias_deriv = {};
     %% FASE FORWARD-PROPAGATION
     [a_, z_] = forward_step(net, x);
-    z_ = {x z_{:}};
+    z_ = [{x} z_(:)'];
     
     %% FASE BACK-PROPAGATION (calcolo delta)
     %Calcolo dela nodi di uscita
