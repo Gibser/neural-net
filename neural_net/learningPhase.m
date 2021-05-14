@@ -1,5 +1,5 @@
-function [err, final_net, err_val] = learningPhase(net, N, x, t, x_val, t_val, errFuncDeriv, BATCH)
-eta=0.1; %Learning rate e' un parametro che posso scegliere, e relativo alla regola di aggiornamento
+function [err, final_net, err_val] = learningPhase(net, N, x, t, x_val, t_val, errFuncDeriv, eta, BATCH)
+         %Learning rate e' un parametro che posso scegliere, e relativo alla regola di aggiornamento
          % scelta, ed è considerato un iper-parametro del processo di
          % learning. In genere passato come parametro alla funzione.
          %Apprendimento Batch (1) oppure on-line (0). In genere come parametro della funzione
@@ -11,7 +11,7 @@ min_err = sumOfSquares(y_val, t_val);
 final_net = net;
 
 if BATCH==1
-    eta=0.05; %In genere in fase Batch il learning rate è più piccolo;
+    eta=0.0005; %In genere in fase Batch il learning rate è più piccolo;
 end
 
 for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
