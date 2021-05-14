@@ -19,7 +19,7 @@ function [W_deriv, bias_deriv] = backpropagation(net, x, t, derivFunErr)
     z = 2;
     bias_deriv{net.n_layers-1} = delta_out;
     for i=net.n_layers-2 : -1: 1
-        disp(deltas{i+1});
+        %disp(deltas{i+1});
         deltas{i} = net.weights{end-w}' * deltas{i+1};
         deltas{i} = deltas{i} .* net.deriv_func{end-a}(a_{end-a});
         W_deriv{i} = deltas{i} * z_{end-z}';
@@ -27,7 +27,7 @@ function [W_deriv, bias_deriv] = backpropagation(net, x, t, derivFunErr)
         w = w + 1;
         a = a + 1;
         z = z + 1;
-        disp(W_deriv);
+        %disp(W_deriv);
     end
     
 

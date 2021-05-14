@@ -5,8 +5,7 @@ eta=0.1; %Learning rate e' un parametro che posso scegliere, e relativo alla reg
          %Apprendimento Batch (1) oppure on-line (0). In genere come parametro della funzione
 err = zeros(1,N);
 err_val = zeros(1,N);
-[~, z_] = forward_step(net, x_val);
-y_val = z_{end};
+[~, y_val] = forward_step(net, x_val);
 min_err = sumOfSquares(y_val, t_val);
 final_net = net;
 
@@ -24,15 +23,13 @@ for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
         end
     else
      %BATCH LEARNIG
-     [w, b] = backpropagation(net, x, t, errFuncDeriv);
+     [w, b] = backpropagation(net, x(:,n), t(:,n), errFuncDeriv);
      %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
      net = gradientDescent(net, eta, w, b);
     end
     
-    [~, z2_] = forward_step(net, x);
-    [~, z_] = forward_step(net, x_val);
-    y = z2_{end};
-    y_val = z_{end};
+    y = forward_step(net, x);
+    [~, y_val] = forward_step(net, x_val);
     err(epoch) = crossEntropyMC(y,t); %Cross-entropy for multiple classes
     %err(epoch)=sumOfSquares(y,t);
     %err_val(epoch)=sumOfSquares(y_val,t_val);

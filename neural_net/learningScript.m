@@ -36,5 +36,5 @@ TVal= T_r(:,201:400);
 XTest=X_r(:,401:end);
 TTest= T_r(:,401:end);
 %%
-n = net([size(XTrain,1) 10 10 4 size(TTrain,1)], {@sigmoid, @sigmoid, @sigmoid, @identity}, {@sigmoidDeriv, @sigmoidDeriv, @sigmoidDeriv, @identityDeriv}, 4);
-[err, new_net, err_val] = learningPhase(n, MAX_EPOCHES, XTrain, TTrain, XVal, TVal, @derivCrossEntropyMC, 1);
+n = net([size(XTrain,1) 10 10 4 size(TTrain,1)], {@sigmoid, @sigmoid, @sigmoid, @sigmoid}, {@sigmoidDeriv, @sigmoidDeriv, @sigmoidDeriv, @sigmoidDeriv}, 5);
+[err, new_net, err_val] = learningPhase(n, MAX_EPOCHES, XTrain, TTrain, XVal, TVal, @crossEntropyMCDeriv, 1);
