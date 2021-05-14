@@ -21,9 +21,13 @@ class NeuralNetwork():
         a_ = []
         z_ = []
         for i in range(self.n_layers-1):
-            a = np.matmul(self.training_weights[i], z) + self.training_biases[i].squeeze()
+            if self.training_biases[i].squeeze().ndim != 0:
+                a = np.matmul(self.training_weights[i], z) + (self.training_biases[i].squeeze()[:, None])
+            else:
+                a = np.matmul(self.training_weights[i], z) + (self.training_biases[i].squeeze())
             a_.append(a)
             z = self.activations[i](a)
+            print(z)
             z_.append(z)
         return a_, z_
 
@@ -44,8 +48,9 @@ class NeuralNetwork():
         z = 2
         bias_deriv.append(delta_out)
 
-        for i in range(self.n_layers-2, -1, -1):
+        for i in range(self.n_layers-2):
             deltas.insert(0, np.matmul(np.transpose(self.weights[-1-w]), deltas[0]))
+            print(i)
             deltas[0] = np.multiply(deltas[0], self.actv_deriv[-1-a](a_[-1-a]))
             W_deriv.insert(0, np.matmul(deltas[0], np.transpose(z_[-1-z])))
             bias_deriv.insert(0, deltas[0])
@@ -61,13 +66,13 @@ class NeuralNetwork():
             self.training_biases[i] = self.training_biases[i] - eta*bias_deriv[i]
 
     def train(self, N, x, t, x_val, t_val, errFuncDeriv, eta, BATCH):
-        err = np.zeros(1, N)
-        err_val = np.zeros(1, N)
-        _, z_ = self.forward_step(x_val)
-        y_val = z_
-        min_err = sumOfSquares(y_val, t_val)
+        err = []
+        err_val = []
         self.training_weights = self.weights.copy()
         self.training_biases = self.biases.copy()
+        _, z_ = self.forward_step(x_val)
+        y_val = z_[1]
+        min_err = sumOfSquares(y_val, t_val)
 
         if BATCH == 1:
             eta = 0.0005
@@ -85,8 +90,8 @@ class NeuralNetwork():
             _, z_ = self.forward_step(x_val)
             y = z2_[-1]
             y_val = z_[-1]
-            err[epoch] = crossEntropyMC(y, t)
-            err_val[epoch] = crossEntropyMC(y_val, t_val)
+            err.append(crossEntropyMC(y, t))
+            err_val.append(crossEntropyMC(y_val, t_val))
             print('Training error: ' + str(err[epoch]) + ' Validation error: ' + str(err_val[epoch]))
 
             if err_val[epoch] < min_err:
@@ -96,3 +101,4 @@ class NeuralNetwork():
             else:
                 self.training_weights = self.weights.copy()
                 self.training_biases = self.biases.copy()
+        return err, err_val
