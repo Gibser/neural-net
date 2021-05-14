@@ -36,7 +36,8 @@ TVal= T_r(:,201:400);
 XTest=X_r(:,401:end);
 TTest= T_r(:,401:end);
 %%
-n = net([size(XTrain,1) 10 10 4 size(TTrain,1)], {@relu, @relu, @relu, @sigmoid}, {@reluDeriv, @reluDeriv, @reluDeriv, @sigmoidDeriv}, 5);
-n2 = net([size(XTrain,1) 10 10 4 size(TTrain,1)], {@sigmoid, @sigmoid, @sigmoid, @sigmoid}, {@sigmoidDeriv, @sigmoidDeriv, @sigmoidDeriv, @sigmoidDeriv}, 5);
-[err, new_net, err_val] = learningPhase(n, MAX_EPOCHES, XTrain, TTrain, XVal, TVal, @crossEntropyMCDeriv, eta, 1);
-[err2, new_net2, err_val2] = learningPhase(n2, MAX_EPOCHES, XTrain, TTrain, XVal, TVal, @crossEntropyMCDeriv, eta, 1);
+%n = net([size(XTrain,1) 10 10 4 size(TTrain,1)], {@relu, @relu, @relu, @sigmoid}, {@reluDeriv, @reluDeriv, @reluDeriv, @sigmoidDeriv}, 5);
+%n2 = net([size(XTrain,1) 10 10 4 size(TTrain,1)], {@sigmoid, @sigmoid, @sigmoid, @sigmoid}, {@sigmoidDeriv, @sigmoidDeriv, @sigmoidDeriv, @sigmoidDeriv}, 5);
+n = net([size(XTrain, 1) 50 size(TTrain, 1)], {@sigmoid, @sigmoid}, {@sigmoidDeriv, @sigmoidDeriv}, 3);
+[err, new_net, err_val] = learningPhase(n, MAX_EPOCHES, XTrain, TTrain, XVal, TVal, @crossEntropyMCDeriv, eta, 0);
+%[err2, new_net2, err_val2] = learningPhase(n2, MAX_EPOCHES, XTrain, TTrain, XVal, TVal, @crossEntropyMCDeriv, eta, 1);
