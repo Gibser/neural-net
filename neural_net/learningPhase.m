@@ -7,12 +7,8 @@ err = zeros(1,N);
 err_val = zeros(1,N);
 [~, z_] = forward_step(net, x_val);
 y_val = z_{end};
-min_err = sumOfSquares(y_val, t_val);
+min_err = crossEntropyMC(y_val, t_val);%sumOfSquares(y_val, t_val)
 final_net = net;
-
-if BATCH==1
-    eta=0.0005; %In genere in fase Batch il learning rate è più piccolo;
-end
 
 for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
     %LEARNING ON-LINE
