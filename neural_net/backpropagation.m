@@ -17,13 +17,14 @@ function [W_deriv, bias_deriv] = backpropagation(net, x, t, derivFunErr)
     w = 0; %Questo indice serve per iterare sulle matrici W della rete
     a = 1; %Questo indice serve per gli input a dei neuroni nei livelli
     z = 2;
-    bias_deriv{net.n_layers-1} = delta_out;
+    bias_deriv{net.n_layers-1} = sum(delta_out, 2);
+    disp(size(delta_out))
     for i=net.n_layers-2 : -1: 1
         %disp(deltas{i+1});
         deltas{i} = net.weights{end-w}' * deltas{i+1};
         deltas{i} = deltas{i} .* net.deriv_func{end-a}(a_{end-a});
         W_deriv{i} = deltas{i} * z_{end-z}';
-        bias_deriv{i} = deltas{i};
+        bias_deriv{i} = sum(deltas{i}, 2);
         w = w + 1;
         a = a + 1;
         z = z + 1;
