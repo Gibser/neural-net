@@ -21,7 +21,9 @@ TVal= sin(XVal);
 XTest=randn(600, 1)';
 TTest= sin(XTest);
 
+tic
 %n = NeuralNetwork([1 50 1], {@sigmoid, @identity}, {@sigmoidDeriv, @identityDeriv}, 3);
 %n.train(MAX_EPOCHES, X, T, XVal, TVal, @sumOfSquares, @sumOfSquaresDeriv, eta, 1);
 n = net([1 50 1], {@sigmoid, @identity}, {@sigmoidDeriv, @identityDeriv}, 3)
 [err, n, err_val] = learningPhase(n, MAX_EPOCHES, X, T, XVal, TVal, @sumOfSquares, @sumOfSquaresDeriv, eta, 1);
+toc

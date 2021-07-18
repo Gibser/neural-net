@@ -4,8 +4,8 @@ function net=net(n_neurons, actv_functions, deriv_func, n_layers)
     net.biases = {};
     net.activations = {};
     for i=2 : n_layers
-        net.weights{i-1} = SIGMA*randn(n_neurons(i), n_neurons(i-1));
-        net.biases{i-1} = SIGMA*randn(n_neurons(i), 1);
+        net.weights{i-1} = SIGMA*randn(n_neurons(i), n_neurons(i-1));%gpuArray(SIGMA*randn(n_neurons(i), n_neurons(i-1)));
+        net.biases{i-1} = SIGMA*randn(n_neurons(i), 1);%gpuArray(SIGMA*randn(n_neurons(i), 1));
         net.activations{i-1} = actv_functions{i-1};
         net.deriv_func{i-1} = deriv_func{i-1};
     end
