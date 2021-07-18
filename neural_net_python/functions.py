@@ -19,3 +19,9 @@ def crossEntropyMC(y, t):
 
 def crossEntropyMCDeriv(y, t):
     return -np.sum(np.multiply(t, y), 1)
+
+def identity(x):
+    return x
+
+def identityDeriv(x):
+    return 1

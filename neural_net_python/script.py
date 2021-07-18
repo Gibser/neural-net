@@ -1,11 +1,11 @@
-from keras.datasets import mnist
+#from keras.datasets import mnist
 
 from nn import NeuralNetwork
 from functions import *
 
 eta = 0.0005
 MAX_EPOCHS = 200
-
+'''
 (X, T), (X_t, T_t) = mnist.load_data()
 
 X_r = X[:500, :, :]
@@ -22,7 +22,15 @@ TVal = T_r[201:401]
 XTest = X_t[:200, :, :]
 XTest = XTest.reshape(XTest.shape[0], XTest.shape[1]*XTest.shape[2])
 TTest = T_t[:200]
+'''
 
-net = NeuralNetwork([XTrain.shape[1], 50, 1], [sigmoid, sigmoid], [sigmoidDeriv, sigmoidDeriv], 3)
-print(net.weights)
-#net.train(MAX_EPOCHS, np.transpose(XTrain), TTrain, np.transpose(XVal), TVal, crossEntropyMCDeriv, eta, 1)
+X = np.random.randn(600)
+Y = np.sin(X)
+
+XVal = np.random.randn(100)
+YVal = np.sin(XVal)
+
+
+net = NeuralNetwork([X.shape[0], 50, 1], [sigmoid, identity], [sigmoidDeriv, identityDeriv], 3)
+#print(net.weights)
+net.train(MAX_EPOCHS, np.transpose(X), Y, np.transpose(XVal), YVal, sumOfSquares, sumOfSquaresDeriv, eta, 1)

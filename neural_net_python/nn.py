@@ -65,14 +65,14 @@ class NeuralNetwork():
             self.training_weights[i] = self.training_weights[i] - eta*W_deriv[i]
             self.training_biases[i] = self.training_biases[i] - eta*bias_deriv[i]
 
-    def train(self, N, x, t, x_val, t_val, errFuncDeriv, eta, BATCH):
+    def train(self, N, x, t, x_val, t_val, errFunc, errFuncDeriv, eta, BATCH):
         err = []
         err_val = []
         self.training_weights = self.weights.copy()
         self.training_biases = self.biases.copy()
         _, z_ = self.forward_step(x_val)
         y_val = z_[1]
-        min_err = sumOfSquares(y_val, t_val)
+        min_err = errFunc(y_val, t_val)
 
         if BATCH == 1:
             eta = 0.0005
@@ -90,8 +90,8 @@ class NeuralNetwork():
             _, z_ = self.forward_step(x_val)
             y = z2_[-1]
             y_val = z_[-1]
-            err.append(crossEntropyMC(y, t))
-            err_val.append(crossEntropyMC(y_val, t_val))
+            err.append(errFunc(y, t))
+            err_val.append(errFunc(y_val, t_val))
             print('Training error: ' + str(err[epoch]) + ' Validation error: ' + str(err_val[epoch]))
 
             if err_val[epoch] < min_err:
