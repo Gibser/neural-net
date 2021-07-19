@@ -6,6 +6,8 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
           n_neurons: numero di neuroni se il livello è FC, numero di filtri
                      se è conv
           dim:     se type è conv, indica le dimensioni dei kernel
+          stride: indica lo stride per i kernel
+          padding: indica il padding da applicare all'input prima della convoluzione
         }
     %}
     
