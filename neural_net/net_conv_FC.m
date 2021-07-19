@@ -25,7 +25,7 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
        elseif layers{i}.type == 1   %Livello full connected
            net.weights{i-1} = SIGMA*randn(layers{i}.n_neurons, layers{i-1}.n_neurons);
        end
-       net.biases{i-1} = SIGMA*randn(layers{i}.n_neurons, 1);%gpuArray(SIGMA*randn(n_neurons(i), 1));
+       net.biases{i-1} = SIGMA*randn(layers{i}.n_neurons, 1)';%gpuArray(SIGMA*randn(n_neurons(i), 1));
        net.activations{i-1} = actv_functions{i-1};
        net.deriv_func{i-1} = deriv_func{i-1};
     end

@@ -1,14 +1,18 @@
 function [a_, z_] = forward_step_convFC(net, x)
    z = x;
-   for i=1 : net.n_layers-1
-       if net.layers{i}.type == 1
-            a = net.weights{i} * flatten_input(z, net.layers{i}.dim(1), net.layers{i}.dim(2), net.layers{i}.stride, net.layers{i}.padding) + net.biases{i};
+   for i=2 : net.n_layers
+       if net.layers{i}.type == 2
+            a = flatten_input(z, net.layers{i}.dim(1), net.layers{i}.dim(2), net.layers{i}.stride, net.layers{i}.padding)*net.weights{i-1} + net.biases{i-1};
        else
-            a = net.weights{i} * z + net.biases{i};
+            if i > 0 && net.layers{i-1}.type == 2
+                a = net.weights{i-1} * z' + net.biases{i-1};
+            else
+                a = net.weights{i-1} * z + net.biases{i-1};
+            end
        end
-       a_{i} = a;
-       z = net.activations{i}(a);
-       z_{i} = z;
+       a_{i-1} = a;
+       z = net.activations{i-1}(a);
+       z_{i-1} = z;
    end
 end
 
