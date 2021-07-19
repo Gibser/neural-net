@@ -14,25 +14,25 @@ function [M] = flatten_input(input, kernel, k_h, k_w, s, P)
     
     H_out = (d(1) + 2*P - k_h)/s + 1;
     W_out = (d(2) + 2*P - k_w)/s + 1;
-    disp(H_out);
-    disp(W_out);
     M = zeros(d(3)*H_out*W_out, k_h*k_w*C_in);
     L = zeros(k_h*k_w*C_in, d(3));
     
-    for j=1 : d(3)*H_out*W_out
-        l = floor(j / (H_out*W_out))+1;
+    for j=0 : d(3)*H_out*W_out-1
+        disp(j);
+        l = floor(j / (H_out*W_out));
         p = mod(j, H_out*W_out);
-        m = floor(p/H_out)+1;
-        t = mod(p, W_out)+1;
+        m = floor(p/H_out);
+        t = mod(p, W_out);
         isw = t*s;
         ish = m*s;
-        
+        disp(isw);
+        disp(ish);
         if length(d) == 4
-            arr = input(ish:ish+k_h, isw:isw+k_w, l, :);
+            arr = input(ish+1:ish+k_h, isw+1:isw+k_w, l+1, :);
         else
-            arr = input(ish:ish+k_h-1, isw:isw+k_w-1, l);
+            arr = input(ish+1:ish+k_h, isw+1:isw+k_w, l+1);
         end
-        M(j, :) = arr(:)';
+        M(j+1, :) = arr(:)';
     end
 end
 
