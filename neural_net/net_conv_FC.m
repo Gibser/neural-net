@@ -14,16 +14,20 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
     net.biases = {};
     net.activations = {};
     net.deriv_func = {};
-
-    for i=2 : n_layers-1
+    net.layers = layers;
+    
+    for i=2 : n_layers
        if layers{i}.type == 1   %Livello convoluzionale
-           net.weights{i-1} = flatten_kernel(randn(layers{i}.dim(1), randn(layers{i}.dim(2))));
+           net.weights{i-1} = flatten_kernel(randn(layers{i}.dim(1), layers{i}.dim(2), layers{i}.n_neurons));
        elseif layers{i}.type == 0   %Livello full connected
            net.weights{i-1} = SIGMA*randn(layers{i}.n_neurons, layers{i-1}.n_neurons);
        end
-       net.biases{i-1} = SIGMA*randn(n_neurons(i), 1);%gpuArray(SIGMA*randn(n_neurons(i), 1));
+       net.biases{i-1} = SIGMA*randn(layers{i}.n_neurons, 1);%gpuArray(SIGMA*randn(n_neurons(i), 1));
        net.activations{i-1} = actv_functions{i-1};
        net.deriv_func{i-1} = deriv_func{i-1};
     end
+    
+    net.activations{n_layers} = actv_functions{n_layers};
+    net.deriv_func{n_layers} = deriv_func{n_layers};
 end
 
