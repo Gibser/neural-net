@@ -17,6 +17,7 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
     net.activations = {};
     net.deriv_func = {};
     net.layers = layers;
+    net.n_layers = n_layers;
     
     for i=2 : n_layers
        if layers{i}.type == 1   %Livello convoluzionale
