@@ -1,7 +1,5 @@
-function [M] = flatten_input(input, kernel, k_h, k_w, s, P)
+function [M] = flatten_input(input, k_h, k_w, s, P)
     d = size(input);
-    dim_k = size(kernel);
-    
     if length(d) == 2       %Se l'input è un sola immagine imposto batchsize a 1
         d(3) = 1;
     end
@@ -15,7 +13,6 @@ function [M] = flatten_input(input, kernel, k_h, k_w, s, P)
     H_out = (d(1) + 2*P - k_h)/s + 1;
     W_out = (d(2) + 2*P - k_w)/s + 1;
     M = zeros(d(3)*H_out*W_out, k_h*k_w*C_in);
-    L = zeros(k_h*k_w*C_in, d(3));
     
     for j=0 : d(3)*H_out*W_out-1
         disp(j);
