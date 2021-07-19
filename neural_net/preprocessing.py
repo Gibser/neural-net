@@ -15,6 +15,13 @@ def flatten_input(input, kernel_shape, s, p):
         M[j, :] = input[l, ish:ish+k_w, isw:isw+k_h, :].flatten()
     return M
 
+
+def flatten_kernel(kernel):
+    n_filter, k_h, k_w, ch = kernel.shape
+    L = np.zeros((k_h*k_w*ch, n_filter), dtype = np.float32)
+    for i in range(n_filter):
+        L[:, i] = kernel[ i , : , : , : ].flatten()
+    return L
 '''
 A = np.random.rand(4, 4)
 print(A)
