@@ -13,7 +13,7 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
     
     SIGMA = 0.1;
     net.weights = {};
-    net.biases = {};
+    %net.biases = {};
     net.activations = {};
     net.deriv_func = {};
     net.layers = layers;
@@ -32,12 +32,13 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
            
            net.layers{i}.output_shape = size(net.weights{i-1} * randn(net.layers{i-1}.output_shape));    
        end
-       
+       %{
        if net.layers{i}.type == 2
             net.biases{i-1} = 0;%SIGMA*randn(net.layers{i}.output_shape(1), 1);%gpuArray(SIGMA*randn(n_neurons(i), 1));
        else
             net.biases{i-1} = SIGMA*randn(net.layers{i}.n_neurons, 1);
        end
+       %}
        net.activations{i-1} = actv_functions{i-1};
        net.deriv_func{i-1} = deriv_func{i-1};
     end
