@@ -11,7 +11,7 @@ min_err = errFunc(y_val, t_val);%sumOfSquares(y_val, t_val)
 final_net = net;
 disp(net.biases);
 
-%Qua succede qualcosa che cambia i bias della rete
+%Qua succede qualcosa che camb
 for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
     %LEARNING ON-LINE
     if BATCH==0

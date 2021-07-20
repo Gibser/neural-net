@@ -6,7 +6,7 @@ function [err, final_net, err_val] = learningPhase(net, N, x, t, x_val, t_val, e
 err = zeros(1,N);
 err_val = zeros(1,N);
 [~, z_] = forward_step(net, x_val);
-y_val = z_{end};
+y_val = reshape(z_{end}, 28, 28, []);    %Questo reshape va generalizzato nella struttura della rete
 min_err = errFunc(y_val, t_val);%sumOfSquares(y_val, t_val)
 final_net = net;
 

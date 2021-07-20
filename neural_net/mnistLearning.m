@@ -1,10 +1,10 @@
-XTrain = X(:, :, 1:100);
-YTrain = Y(1:100);
+XTrain = X(:, :, 1:128);
+YTrain = Y(1:128);
 
-XVal = X(:, :, 100:200);
-YVal = Y(100:200);
+XVal = X(:, :, 129:256);
+YVal = Y(129:256);
 
-load('layers.mat');
+load('layers2.mat');
 
-net = net_conv_FC(l, {@sigmoid, @sigmoid, @identity}, {@sigmoidDeriv, @sigmoidDeriv, @identityDeriv}, 4);
-[err, final_net, err_val] = learningPhase_convFC(net, 100, XTrain, YTrain, XVal, YVal, @sumOfSquares, @sumOfSquaresDeriv, 0.001, 1);
+net = net_conv_FC(layers2, {@relu, @relu}, {@reluDeriv, @reluDeriv}, 3);
+[err, final_net, err_val] = learningPhase_convFC(net, 10, XTrain, XTrain, XVal, XVal, @sumOfSquares, @sumOfSquaresDeriv, 0.001, 1);
