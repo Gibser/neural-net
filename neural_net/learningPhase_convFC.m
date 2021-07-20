@@ -7,6 +7,8 @@ err = zeros(1,N);
 err_val = zeros(1,N);
 [~, z_] = forward_step_convFC(net, x_val);
 y_val = reshape(z_{end}, 28, 28, []);
+disp(size(y_val));
+disp(size(t_val));
 min_err = errFunc(y_val, t_val);
 final_net = net;
 
