@@ -21,7 +21,7 @@ function [W_deriv, bias_deriv] = backpropagation_convFC(net, x, t, derivFunErr)
     %bias_deriv{net.n_layers-1} = sum(delta_out, 2);
     bias_deriv{net.n_layers-1} = delta_out;
     for i=net.n_layers-1 : -1: 2
-        disp(size(deltas{i+1}));
+        
         if net.layers{i}.type == 2
             deltas{i} = net.weights{end-w} * deltas{i+1}';
         else
