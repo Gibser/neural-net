@@ -7,20 +7,21 @@ err = zeros(1,N);
 err_val = zeros(1,N);
 [~, z_] = forward_step_convFC(net, x_val);
 y_val = reshape(z_{end}, 28, 28, []);
-min_err = errFunc(y_val, t_val);%sumOfSquares(y_val, t_val)
+min_err = errFunc(y_val, t_val);
 final_net = net;
 
 for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
     %LEARNING ON-LINE
+    disp(['epoch:' num2str(epoch)]);
     if BATCH==0
         for n=1:size(x,2)
-            [w, b] = backpropagation_convFC(net, x(:,n), t(:,n), errFuncDeriv);
+            [w] = backpropagation_convFC(net, x(:,n), t(:,n), errFuncDeriv);
             %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
             net = gradientDescent_convFC(net, eta, w);
         end
     else
      %BATCH LEARNIG
-     [w, b] = backpropagation_convFC(net, x, t, errFuncDeriv);
+     [w] = backpropagation_convFC(net, x, t, errFuncDeriv);
      %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
      net = gradientDescent_convFC(net, eta, w);
     end
@@ -30,8 +31,8 @@ for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
     
     y = reshape(z2_{end}, 28, 28, []);
     y_val = reshape(z_{end}, 28, 28, []);
-    err(epoch) = mean(errFunc(y,t)); 
-    err_val(epoch) = mean(errFunc(y_val,t_val));
+    err(epoch) = sum(errFunc(y,t)); 
+    err_val(epoch) = sum(errFunc(y_val,t_val));
     disp(['err train:' num2str(err(epoch)) ' err val:' num2str(err_val(epoch))]);
     if err_val(epoch)< min_err
         min_err=err_val(epoch);
