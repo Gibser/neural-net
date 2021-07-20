@@ -1,7 +1,8 @@
 function [L] = flatten_kernel(kernel)
+% Flatterns the kernel
     d=size(kernel);
-    k_h=d(1);
-    k_w=d(2);
+    k_h=d(1); %kernel height
+    k_w=d(2); %kernel width
     
     if length(d)==2
         d(3)=1;

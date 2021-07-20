@@ -5,6 +5,7 @@ function [M] = flatten_input(input, k_h, k_w, s, P)
 % k_w   - kernel's width
 % s     - stride
 % P     - padding
+
     d = size(input);
     if length(d) == 2       %Se l'input è un sola immagine imposto batchsize a 1
         d(3) = 1;
