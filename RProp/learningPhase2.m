@@ -6,10 +6,10 @@ function [err, final_net, err_val] = learningPhase2(net, N, x, t, x_val, t_val, 
 err = zeros(1,N);
 err_val = zeros(1,N);
 [~, z_] = forward_step(net, x_val);
-y_val = z_{end};    %Questo reshape va generalizzato nella struttura della rete
-min_err = errFunc(y_val, t_val);%sumOfSquares(y_val, t_val)
+y_val = z_{end};    
+min_err = errFunc(y_val, t_val);
 final_net = net;
-old_W_deriv=initOld_W_deriv(net);
+old_W_deriv = {};
 for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
     %LEARNING ON-LINE
     if BATCH==0

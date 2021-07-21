@@ -1,5 +1,5 @@
 eta=0.0001;
-MAX_EPOCHES=4;
+MAX_EPOCHES=400;
 
 
 X = randn(600, 1)';

@@ -1,8 +1,8 @@
 function new_momentum = updateMomentum(net, currentMomentum,old_W_deriv, current_W_deriv)
-etaPlus = 1.5;
+etaPlus = 1.2;
 etaMinus = -0.5;
 etaMax = 50;
-etaMin = -50;
+etaMin = 0;
 new_momentum = zeros(size(currentMomentum,1), size(currentMomentum,2));
 
 res = current_W_deriv .* old_W_deriv;
@@ -12,14 +12,12 @@ res = current_W_deriv .* old_W_deriv;
 %disp(currentMomentum);
 for r=1 : rows
     for c=1: cols
-        
-
         if(res(r,c)>0)
             new_momentum(r,c) = etaPlus * currentMomentum(r,c);
             %new_momentum(r,c) = min(etaPlus * currentMomentum(r,c), etaMax);
         else
             new_momentum(r,c) = etaMinus * currentMomentum(r,c);
-            %new_momentum(r,c) = max(etaPlus * currentMomentum(r,c), etaMin);
+            %new_momentum(r,c) = max(etaMinus * currentMomentum(r,c), etaMin);
         end
 
     end

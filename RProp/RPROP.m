@@ -3,11 +3,11 @@ function net = RPROP(net, W_deriv, old_W_deriv, bias_deriv, epoch)
     %%%%
     %%
     for i=1 : net.n_layers-1
-    disp(['strato', num2str(i)]);
-    disp('Old Deriv');
-    disp(old_W_deriv{i});
-    disp('New Deriv');
-    disp(W_deriv{i});
+   % disp(['strato', num2str(i)]);
+    %disp('Old Deriv');
+    %disp(old_W_deriv{i});
+    %disp('New Deriv');
+    %disp(W_deriv{i});
         if( epoch==1 ) 
             disp('Prima iterazione');
             net = gradientDescent(net, 0.0001, W_deriv,bias_deriv);
