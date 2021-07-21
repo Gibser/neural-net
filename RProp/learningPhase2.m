@@ -10,13 +10,15 @@ y_val = z_{end};
 min_err = errFunc(y_val, t_val);
 final_net = net;
 old_W_deriv = {};
+old_Deltas = {};
+
 for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
     %LEARNING ON-LINE
     if BATCH==0
         for n=1:size(x,2)
             [w, b] = backpropagation(net, x(:,n), t(:,n), errFuncDeriv);
             %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
-            net = RPROP(net, w, old_W_deriv, b, epoch);
+             net = RPROP(net, w, old_W_deriv, b, epoch);
             old_W_deriv = w;
         end
     else
@@ -24,7 +26,7 @@ for epoch=1:N %In QUESTO CASO sto suppenendo di fare sempre tutte le iterazioni
         [w, b] = backpropagation(net, x, t, errFuncDeriv);
         %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
         
-        net = RPROP(net, w, old_W_deriv, b, epoch);
+        [net, old_Deltas, w] = RPROP(net, w, old_W_deriv, b, epoch, old_Deltas);
         old_W_deriv = w;
     end
     

@@ -6,12 +6,16 @@ etaMin = 0;
 new_momentum = zeros(size(currentMomentum,1), size(currentMomentum,2));
 
 res = current_W_deriv .* old_W_deriv;
-
+%{
 disp('current mom');
 disp(currentMomentum);
-
-new_momentum = currentMomentum + (etaPlus*((res>0) .* currentMomentum));
-new_momentum = currentMomentum + (-etaMinus*((res<0) .* currentMomentum));
+disp((res>0));
+disp((res>0) .* currentMomentum);
+%}
+new_momentum = new_momentum + (etaPlus*((res>0) .* currentMomentum));
+new_momentum = new_momentum + (-etaMinus*((res<0) .* currentMomentum));
+new_momentum = new_momentum + ((res==0) .* currentMomentum);
+%{
 disp('new mom');
 disp(new_momentum);
 
@@ -23,5 +27,6 @@ disp( old_W_deriv);
 
 disp('res');
 disp( res );
+%}
 end
 
