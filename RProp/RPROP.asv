@@ -1,13 +1,22 @@
-function net = RPROP(net, W_deriv, bias_deriv, momentums_, epoch)
+function net = RPROP(net, W_deriv, old_W_deriv, bias_deriv, epoch)
     %Aggiorna pesi e bias in base alla RPROP
+    %%%%
+    %%
+    disp('Old Deriv');
+    disp(old_W_deriv);
+    disp
     for i=1 : net.n_layers-1
-        old_wei = net.weights{i}
-        net.weights{i} = net.weights{i} - sign(W_deriv{i})*momentums_{i};
-        net.biases{i} = net.biases{i} - sign(bias_deriv{i})*momentums_{i};
+        if( epoch==1 ) 
+            disp('Prima iterazione');
+            net = gradientDescent(net, 0.0001, W_deriv,bias_deriv);
+        else 
+            net.weightMomentums{i} = updateMomentum(net, net.weightMomentums{i}, old_W_deriv{i}, W_deriv{i});
+            %net.biasMomentums{i} = updateMomentum(net,net.biasMomentums{i}, old_W_deriv, W_deriv);
+        end
+        net.weights{i} = net.weights{i} - (sign(W_deriv{i}).*net.weightMomentums{i});
+        %net.biases{i} = net.biases{i} - (sign(bias_deriv{i}).*net.biasMomentums{i});
+        
     end
-    
-    for i=1 : net.weights-1
-       momentums_{i} = update(momentums_{i}, epoch);
-    end
+   %%%%
 end
 
