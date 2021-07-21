@@ -10,6 +10,11 @@ res = current_W_deriv .* old_W_deriv;
 [rows, cols] = size(res);
 %disp('current mom');
 %disp(currentMomentum);
+
+%a = a + (1.2 * ((c>0) .* d));
+
+new_momentum = currentMomentum + (etaPlus*((res>0) .* currentMomentum));
+new_momentum = currentMomentum + (etaPlus*((res0) .* currentMomentum));
 for r=1 : rows
     for c=1: cols
         if(res(r,c)>0)
