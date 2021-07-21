@@ -1,0 +1,17 @@
+function new_momentum = updateMomentum(net,currentMomentum,old_W_deriv, current_W_deriv)
+    etaPlus = 1.2;
+    etaMinus = -0.9;
+    disp(['W_deriv', current_W_deriv]);
+    %disp(size(old_W_deriv));
+    for i=1 : net.n_layers-1
+        res{i} = current_W_deriv{i} .* old_W_deriv{i};
+        if(current_W_deriv{i} * old_W_deriv{i} > 0)
+        new_momentum = etaPlus * currentMomentum;
+    else
+        new_momentum = etaMinus * currentMomentum;
+        end
+    end
+    
+    
+end
+
