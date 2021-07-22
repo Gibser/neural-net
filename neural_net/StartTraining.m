@@ -11,22 +11,12 @@ MOMENTUM = 0.8;
 load('X.mat');
 load('Y.mat');
 
-<<<<<<< HEAD
-%load('X10K.mat');
-%load('Y10K.mat');
-
-XT = X(:,:,1:3968);
-YT = Y(1:3968);
-
-XV = X(:,:,3969:3968+1920);
-YV = Y(3969:3968+1920);
-=======
 XT = X(:,:,1:TRAIN_SIZE);
 YT = Y(1:TRAIN_SIZE);
 
 XV = X(:,:,TRAIN_SIZE+1:TRAIN_SIZE+1+VALIDATION_SIZE);
 YV = Y(TRAIN_SIZE+1:TRAIN_SIZE+1+VALIDATION_SIZE);
->>>>>>> 518a073bbbb31d7406b162a590e9b08185ecd7e1
+
 
 YT = build_Y(YT);
 YV = build_Y(YV);
@@ -38,11 +28,6 @@ layers2{3}.n_neurons = 10;
 layers2{2}.stride=2;
 layers2{2}.padding=0;
 %% load net
-<<<<<<< HEAD
-net = net_conv_FC(layers2, {@relu, @sigmoid}, {@reluDeriv, @sigmoidDeriv}, 3);
-[err, final_net, err_val] = learningPhase_convFC(net, 20, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, 0.001, 0.9, 128);
-=======
->>>>>>> 518a073bbbb31d7406b162a590e9b08185ecd7e1
 
 net = net_conv_FC(layers2, {@sigmoid, @sigmoid }, {@sigmoidDeriv, @sigmoidDeriv}, 3);
 [err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, ETA, MOMENTUM, 128);
