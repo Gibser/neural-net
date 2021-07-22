@@ -1,29 +1,54 @@
-%% Load Data
 clear;
+
+TRAIN_SIZE = 25600;
+VALIDATION_SIZE = 512;
+EPOCHE = 50;
+%% Load Data
+
 load('X.mat');
 load('Y.mat');
 
-XT = X(:,:,1:128);
-YT = Y(1:128);
+XT = X(:,:,1:TRAIN_SIZE);
+YT = Y(1:TRAIN_SIZE);
 
-XV = X(:,:,129:256);
-YV = Y(129:256);
+XV = X(:,:,TRAIN_SIZE+1:TRAIN_SIZE+1+VALIDATION_SIZE);
+YV = Y(TRAIN_SIZE+1:TRAIN_SIZE+1+VALIDATION_SIZE);
 
-YT=build_Y(YT);
-YV=build_Y(YV);
+YT = build_Y(YT);
+YV = build_Y(YV);
 %% Load layers
 
 load('layers2.mat');
 layers2{1}.dim=[28 28 1];
-layers{2}.n_neurons=128;
-layers2{3}.n_neurons=10;
-
+layers2{3}.n_neurons = 10;
+layers2{2}.stride=2;
+layers2{2}.padding=0;
 %% load net
-net = net_conv_FC(layers2, {@relu, @sigmoid}, {@reluDeriv, @sigmoidDeriv}, 3);
-[err, final_net, err_val] = learningPhase_convFC(net, 25, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, 0.01, 0.08, 128);
 
-
+net = net_conv_FC(layers2, {@sigmoid, @sigmoid }, {@sigmoidDeriv, @sigmoidDeriv}, 3);
+[err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, 0.02, 1, 128);
+min_val_err = err_val;
+best_net = final_net;
+best_eta = 0;
+best_momentum = 0;
+%{
+for eta=0:0.01:1
+    for momentum=0:1
+        [err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, eta, momentum, 128);
+        if(err_val<min_val_err)
+            disp(['Best eta ', eta]);
+            disp(['Best momentum ', momentum]);
+            min_val_err = err_val;
+            best_net = final_net;
+            best_eta = eta;
+            best_momentum = momentum;
+        end
+    end
+end
+%}
 %TEST
 % [a,z] = forward_step_convFC(final_net, X(:,:,1));
 % z{2}
 % Y(1);
+% colormap gray
+% imagesc(X(:,:,1));
