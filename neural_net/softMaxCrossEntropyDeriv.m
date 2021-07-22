@@ -1,4 +1,5 @@
 function [e] =softMaxCrossEntropyDeriv(Y,T)
-   e=sum(Y-T);
+   e=Y'-T;
+   e=e';
 end
 

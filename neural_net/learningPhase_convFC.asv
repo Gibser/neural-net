@@ -36,14 +36,15 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
      %BATCH LEARNIG
      [w] = backpropagation_convFC(net, x, t, errFuncDeriv);
      %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
-     net = gradientDescent_convFC(net, eta, w);
+     net = GDMomentum(net, w, old_Deltas, eta, momentum);
     elseif BATCH==2
         for k=1 : batch_size : size(x, 2)
             rand_index = int32((batch_size - 1) .* rand(1) + (1));
             %disp(rand_index);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(:, :, k:k+batch_size-1), errFuncDeriv);
+            [w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k + rand_index), t(:, :, k + rand_index), errFuncDeriv); %SGD
-            [w] = backpropagation_convFC(net, x(:, :, k + rand_index), t(k + rand_index,:), errFuncDeriv); %SGD
+            %[w] = backpropagation_convFC(net, x(:, :, k + rand_index), t(k + rand_index,:), errFuncDeriv); %SGD
             [net, old_Deltas] = GDMomentum(net, w, old_Deltas, eta, momentum); 
         end       
     end
@@ -54,7 +55,7 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
     %y = reshape(z2_{end}, 28, 28, []); decommentare per ric
     y=z2_{end}; %commentare per ric
     %y_val = reshape(z_{end}, 28, 28, []); decommentare per ric
-    y_val= z_{end};
+    y_val= z_{end}; %commentare per ric
     err(epoch) = sum(errFunc(y,t)); 
     err_val(epoch) = sum(errFunc(y_val,t_val));
     disp(['err train:' num2str(err(epoch)) ' err val:' num2str(err_val(epoch))]);
