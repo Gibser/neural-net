@@ -27,6 +27,8 @@ layers2{2}.padding=0;
 
 net = net_conv_FC(layers2, {@sigmoid, @sigmoid }, {@sigmoidDeriv, @sigmoidDeriv}, 3);
 [err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, 0.02, 1, 128);
+
+%% "GRID SEARCH" per eta e momentum
 min_val_err = err_val;
 best_net = final_net;
 best_eta = 0;
