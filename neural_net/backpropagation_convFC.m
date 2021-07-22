@@ -11,7 +11,10 @@ function [W_deriv] = backpropagation_convFC(net, x, t, derivFunErr)
     %% FASE BACK-PROPAGATION (calcolo delta)
     %Calcolo dela nodi di uscita
     delta_out = net.deriv_func{end}(a_{end});
-    delta_out = delta_out .* derivFunErr(reshape(z_{end}, 28, 28, []), t);
+    %decommentare per ricostruzione
+    %delta_out = delta_out .* derivFunErr(reshape(z_{end}, 28, 28, []), t);
+    %commentare per ric
+    delta_out = delta_out .* derivFunErr(z_{end}, t);
     %delta_out = reshape(delta_out, 28*28, []);
     deltas{net.n_layers} = delta_out;
     %disp(size(delta_out));
