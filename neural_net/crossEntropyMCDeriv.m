@@ -1,3 +1,5 @@
 function e=crossEntropyMCDeriv(Y, T)
-    e = -sum( T ./ Y , 2);
+   % disp(size(T));
+    %disp(size(Y));
+    e = -sum( T' ./ Y , 2);
 end
