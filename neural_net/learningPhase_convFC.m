@@ -39,7 +39,7 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
      net = GDMomentum(net, w, old_Deltas, eta, momentum);
     elseif BATCH==2
         for k=1 : batch_size : size(x, 2)
-            rand_index = int32((batch_size - 1) .* rand(1) + (1));
+            rand_index = floor((batch_size - 1) .* rand(1) + (1));
             %disp(rand_index);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(:, :, k:k+batch_size-1), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1,:), errFuncDeriv);
