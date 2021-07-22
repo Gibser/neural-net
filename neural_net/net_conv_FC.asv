@@ -32,7 +32,7 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
            end
            
            flat_input = flatten_input(randn(dimension), net.layers{i}.dim(1), net.layers{i}.dim(2), net.layers{i}.stride, net.layers{i}.padding);
-           %he_uniform initialization for weights
+           %he_normal initialization for weights
            limit = sqrt(6 / size(flat_input, 1));       %limit = sqrt(6 / fan_in) (fan_in is the number of input units in the weight tensor)
            net.weights{i-1} = flatten_kernel(-limit + (limit+limit).*rand(layers{i}.dim(1), layers{i}.dim(2), layers{i}.n_neurons));
            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -49,17 +49,14 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
                 %cioé H_out*W_out*n_neurons. Quindi il livello denso
                 %successivo dovrà ricevere connessioni da questo numero di
                 %neuroni
-                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 %he_uniform%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
                 %limit = sqrt(6 / (net.layers{i-1}.feature_map_dim(1) * net.layers{i-1}.feature_map_dim(2) * net.layers{i-1}.n_neurons));
                 %net.weights{i-1} = -limit + (limit+limit).*rand(layers{i}.n_neurons, net.layers{i-1}.feature_map_dim(1) * net.layers{i-1}.feature_map_dim(2) * net.layers{i-1}.n_neurons);
                 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
                 net.weights{i-1} = SIGMA*randn(layers{i}.n_neurons, net.layers{i-1}.feature_map_dim(1) * net.layers{i-1}.feature_map_dim(2) * net.layers{i-1}.n_neurons);
            else
-                %he_uniform%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                %limit = sqrt(6 / layers{i-1}.n_neurons);
-                %net.weights{i-1} = -limit + (limit+limit).*rand(layers{i}.n_neurons, layers{i-1}.n_neurons); 
-                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+               
                 net.weights{i-1} = SIGMA*randn(layers{i}.n_neurons, layers{i-1}.n_neurons); 
            end
            %disp(size(net.weights{i-1}));
@@ -81,3 +78,12 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
     %net.activations{n_layers} = actv_functions{n_layers};
     %net.deriv_func{n_layers} = deriv_func{n_layers};
 end
+
+
+limit = sqrt(6 / (net.layers{i-1}.feature_map_dim(1) * net.layers{i-1}.feature_map_dim(2) * net.layers{i-1}.n_neurons));
+                net.weights{i-1} = -limit + (limit+limit).*rand(layers{i}.n_neurons, net.layers{i-1}.feature_map_dim(1) * net.layers{i-1}.feature_map_dim(2) * net.layers{i-1}.n_neurons);
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+           else
+                limit = sqrt(6 / layers{i-1}.n_neurons);
+                net.weights{i-1} = -limit + (limit+limit).*rand(layers{i}.n_neurons, layers{i-1}.n_neurons); 
+
