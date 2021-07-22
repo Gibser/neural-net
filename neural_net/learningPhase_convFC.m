@@ -27,10 +27,10 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
     t=t(ind,:); %decommentare per ricostruzione
     disp(['epoch:' num2str(epoch)]);
     if BATCH==0
-        for n=1:size(x,2)
-            [w] = backpropagation_convFC(net, x(:,n), t(:,n), errFuncDeriv);
+        for n=1:size(x,3)
+            [w] = backpropagation_convFC(net, x(:,:,n), t(n, :), errFuncDeriv);
             %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
-            net = gradientDescent_convFC(net, eta, w);
+            net = GDMomentum(net, w, old_Deltas, eta, momentum);
         end
     elseif BATCH==1
      %BATCH LEARNIG
@@ -39,7 +39,7 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
      net = GDMomentum(net, w, old_Deltas, eta, momentum);
     elseif BATCH==2
         for k=1 : batch_size : size(x, 2)
-            rand_index = int32((batch_size - 1) .* rand(1) + (1));
+            rand_index = floor((batch_size - 1) .* rand(1) + (1));
             %disp(rand_index);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(:, :, k:k+batch_size-1), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1,:), errFuncDeriv);
@@ -49,17 +49,15 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
         end       
     end
     
-    [~, z2_] = forward_step_convFC(net, x);
-    [~, z_] = forward_step_convFC(net, x_val);
+    [~, z2_] = forward_step_convFC(net, x(:, :, 1));
+    [~, z_] = forward_step_convFC(net, x_val(:, :, 1));
     
     %y = reshape(z2_{end}, 28, 28, []); decommentare per ric
     y=z2_{end}; %commentare per ric
     %y_val = reshape(z_{end}, 28, 28, []); decommentare per ric
     y_val= z_{end}; %commentare per ric
-    err(epoch) = sum(errFunc(y,t)); 
-    disp(size(y));
-    disp(size(t));
-    err_val(epoch) = sum(errFunc(y_val,t_val));
+    err(epoch) = errFunc(y,t); 
+    err_val(epoch) = errFunc(y_val,t_val);
     disp(['err train:' num2str(err(epoch)) ' err val:' num2str(err_val(epoch))]);
     if err_val(epoch)< min_err
         min_err=err_val(epoch);

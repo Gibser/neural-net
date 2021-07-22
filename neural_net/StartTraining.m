@@ -3,11 +3,14 @@ clear;
 load('X.mat');
 load('Y.mat');
 
-XT = X(:,:,1:128);
-YT = Y(1:128);
+%load('X10K.mat');
+%load('Y10K.mat');
 
-XV = X(:,:,129:256);
-YV = Y(129:256);
+XT = X(:,:,1:3968);
+YT = Y(1:3968);
+
+XV = X(:,:,3969:3968+1920);
+YV = Y(3969:3968+1920);
 
 YT=build_Y(YT);
 YV=build_Y(YV);
@@ -20,7 +23,7 @@ layers2{3}.n_neurons=10;
 
 %% load net
 net = net_conv_FC(layers2, {@relu, @sigmoid}, {@reluDeriv, @sigmoidDeriv}, 3);
-[err, final_net, err_val] = learningPhase_convFC(net, 1000, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, 0.001, 0, 128);
+[err, final_net, err_val] = learningPhase_convFC(net, 20, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, 0.001, 0.9, 128);
 
 
 %TEST
