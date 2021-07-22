@@ -20,7 +20,7 @@ layers2{3}.n_neurons=10;
 
 %% load net
 net = net_conv_FC(layers2, {@relu, @sigmoid}, {@reluDeriv, @sigmoidDeriv}, 3);
-[err, final_net, err_val] = learningPhase_convFC(net, 25, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, 0.01, 0.08, 128);
+[err, final_net, err_val] = learningPhase_convFC(net, 1000, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, 0.001, 0, 128);
 
 
 %TEST
