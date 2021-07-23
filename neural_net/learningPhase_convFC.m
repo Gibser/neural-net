@@ -8,8 +8,8 @@ err_val = zeros(1,N);
 [~, z_] = forward_step_convFC(net, x_val);
 %y_val = reshape(z_{end}, 28, 28, []); decommentare per ricostruzione immagini
 y_val=z_{end}; %commentare per ricostruzione immagini
-%disp(size(y_val));
-%disp(size(t_val));
+disp(size(y_val));
+disp(size(t_val));
 min_err = errFunc(y_val, t_val);
 final_net = net;
 old_Deltas = {};
@@ -49,8 +49,8 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
         end       
     end
     
-    [~, z2_] = forward_step_convFC(net, x(:, :, 1));
-    [~, z_] = forward_step_convFC(net, x_val(:, :, 1));
+    [~, z2_] = forward_step_convFC(net, x);
+    [~, z_] = forward_step_convFC(net, x_val);
     
     %y = reshape(z2_{end}, 28, 28, []); decommentare per ric
     y=z2_{end}; %commentare per ric
