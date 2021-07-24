@@ -65,7 +65,7 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
         min_err=err_val(epoch);
         final_net = net;
     end
-    %}
+    %} 
     final_net = net;
 end
 end
