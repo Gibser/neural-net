@@ -44,25 +44,15 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
      %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
      [net, oldDeltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);
     elseif BATCH==2
-        c = 1;
-        for j = 1 : batch_size : length(x)
-           intervals(:, c) = [j j+batch_size-1];
-           c = c + 1;
-        end
-        disp(intervals);
-        permutations = randperm(size(intervals, 2), size(intervals, 2));
-        int_perm = intervals(:, permutations);
-        %disp(int_perm);
-        for k=1 : length(int_perm)
+        for k=1 : batch_size : size(x, 3)
             %rand_index = floor((batch_size - 1) .* rand(1) + (1));
             %disp(rand_index);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(:, :, k:k+batch_size-1), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1,:), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k + rand_index), t(:, :, k + rand_index), errFuncDeriv); %SGD
             %[w, b] = backpropagation_convFC(net, x(:, :, k + rand_index), t(k + rand_index,:), errFuncDeriv); %SGD
-            indexes = int_perm(:, k);
-            disp(indexes);
-            [w, b] = backpropagation_convFC(net, x(:, :, indexes(1):indexes(2)), t(indexes(1):indexes(2),:), errFuncDeriv);
+            
+            [w, b] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1,:), errFuncDeriv);
             [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum); 
         end       
     end

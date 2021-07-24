@@ -1,19 +1,13 @@
 clear;
 
 
-TRAIN_SIZE = 1024;
-<<<<<<< HEAD
+TRAIN_SIZE = 512;
 VALIDATION_SIZE = 512;
 EPOCHE = 100;
-ETA = 0.0001;
-MOMENTUM = 0.9;
+ETA = 0.001;
+MOMENTUM = 0.8;
 BATCH_SIZE = 64;
-=======
-VALIDATION_SIZE = 1024;
-EPOCHE = 400;
-ETA = 0.01;
-MOMENTUM = 0;
->>>>>>> refs/remotes/origin/prova_classificazione
+
 %% Load Data
 
 load('X.mat');
