@@ -23,7 +23,7 @@ for i=1 : net.n_layers-1
     end
 end
 
-disp(old_Deltas_bias);
+%disp(old_Deltas_bias);
 for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
     %LEARNING ON-LINE
     ind=randperm(size(x,3));
@@ -49,7 +49,7 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
            intervals(:, c) = [j j+batch_size-1];
            c = c + 1;
         end
-        disp(intervals);
+        %disp(intervals);
         permutations = randperm(size(intervals, 2), size(intervals, 2));
         int_perm = intervals(:, permutations);
         %disp(int_perm);
@@ -60,9 +60,15 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1,:), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k + rand_index), t(:, :, k + rand_index), errFuncDeriv); %SGD
             %[w, b] = backpropagation_convFC(net, x(:, :, k + rand_index), t(k + rand_index,:), errFuncDeriv); %SGD
-            indexes = int_perm(:, k);
-            disp(indexes);
-            [w, b] = backpropagation_convFC(net, x(:, :, indexes(1):indexes(2)), t(indexes(1):indexes(2),:), errFuncDeriv);
+            indexes = int_perm(:, k);                               %Permutazione casuale dei batch
+            x_batch = x(:, :, indexes(1):indexes(2));
+            t_batch = t(indexes(1):indexes(2),:);
+            
+            indexes_perm = randperm(batch_size, batch_size);     %Permutazione casuale delle immagini NEL batch
+            %Solo permutazione batch
+            %[w, b] = backpropagation_convFC(net, x(:, :, indexes(1):indexes(2)), t(indexes(1):indexes(2),:), errFuncDeriv);
+            %Permutazione batch + permutazione immagini nel batch
+            [w, b] = backpropagation_convFC(net, x_batch(:, :, indexes_perm), t_batch(indexes_perm,:), errFuncDeriv); 
             [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum); 
         end       
     end
@@ -80,7 +86,7 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
     err_val(epoch) = errFunc(y_val, t_val);
    
     disp(['err train:' num2str(err(epoch)) 9 ' err val:' num2str(err_val(epoch))]);
-    disp(['accuracy on train: ',num2str(accuracy(final_net,x,t)),'%' , 9 'accuracy on val: ' num2str(accuracy(final_net,x_val, t_val )), '%']);
+    disp(['accuracy on train: ',num2str(accuracy(final_net, x, vector_class_to_int_class(t))),'%' , 9 'accuracy on val: ' num2str(accuracy(final_net,x_val, vector_class_to_int_class(t_val) )), '%']);
    disp('______________________________');
     if err_val(epoch)< min_err
         min_err=err_val(epoch);
