@@ -3,9 +3,10 @@ clear;
 
 TRAIN_SIZE = 1024;
 VALIDATION_SIZE = 512;
-EPOCHE = 150;
-ETA = 0.001;
-MOMENTUM = 0.8;
+EPOCHE = 100;
+ETA = 0.0001;
+MOMENTUM = 0.9;
+BATCH_SIZE = 64;
 %% Load Data
 
 load('X.mat');
@@ -31,7 +32,7 @@ layers2{2}.padding=0;
 %% load net
 err = 0;
 net = net_conv_FC(layers2, {@relu, @identity}, {@reluDeriv, @identityDeriv}, 3);
-[err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, ETA, MOMENTUM, 128);
+[err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, ETA, MOMENTUM, BATCH_SIZE);
 
 %% "GRID SEARCH" per eta e momentum
 min_val_err = err_val;
