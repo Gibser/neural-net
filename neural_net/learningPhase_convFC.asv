@@ -44,22 +44,19 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
      %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
      [net, oldDeltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);
     elseif BATCH==2
-        for k=1 : batch_size : size(x, 3)
-            %rand_index = floor((batch_size - 1) .* rand(1) + (1));
+        for k=1 : batch_size : size(x, 2)
+            rand_index = floor((batch_size - 1) .* rand(1) + (1));
             %disp(rand_index);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(:, :, k:k+batch_size-1), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1,:), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k + rand_index), t(:, :, k + rand_index), errFuncDeriv); %SGD
-            %[w, b] = backpropagation_convFC(net, x(:, :, k + rand_index), t(k + rand_index,:), errFuncDeriv); %SGD
-            [w, b] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1,:), errFuncDeriv);
+            [w, b] = backpropagation_convFC(net, x(:, :, k + rand_index), t(k + rand_index,:), errFuncDeriv); %SGD
             [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum); 
         end       
     end
     
-    %rand_index = floor((length(x) - 1) .* rand(1) + (1));
-    %rand_index_val = floor((length(x_val) - 1) .* rand(1) + (1));
-    [~, z2_] = forward_step_convFC(net, x);
-    [~, z_] = forward_step_convFC(net, x_val);
+    [~, z2_] = forward_step_convFC(net, x(:, :, 1);
+    [~, z_] = forward_step_convFC(net, x_val(:, :, 1);
     
     %y = reshape(z2_{end}, 28, 28, []); decommentare per ric
     y=z2_{end}; %commentare per ric
@@ -68,9 +65,12 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
     err(epoch) = errFunc(y, t); 
     err_val(epoch) = errFunc(y_val, t_val);
     disp(['err train:' num2str(err(epoch)) ' err val:' num2str(err_val(epoch))]);
+    %{
     if err_val(epoch)< min_err
         min_err=err_val(epoch);
         final_net = net;
     end
+    %} 
+    final_net = net;
 end
 end

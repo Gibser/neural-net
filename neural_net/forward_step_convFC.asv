@@ -4,14 +4,14 @@ function [a_, z_] = forward_step_convFC(net, x)
        if net.layers{i}.type == 2
             a = flatten_input(z, net.layers{i}.dim(1), net.layers{i}.dim(2), net.layers{i}.stride, net.layers{i}.padding)*net.weights{i-1};% + net.biases{i-1};
             a_dim = size(a);
-            a = reshape_flatten(a, net.layers{i}.n_neurons, net.layers{i}.H_out*net.layers{i}.W_out);
+            a = reshape(a, a_dim(1) / (net.layers{i}.H_out * net.layers{i}.W_out), []);
        else
             if net.layers{i-1}.type == 2
-                forward = z;
-                %forward = reshape(z, net.layers{i-1}.output_shape(1)*net.layers{i-1}.output_shape(2), []);
-                %disp(size(forward));
-                %disp(size(net.weights{i-1}));
-                a = net.weights{i-1} * forward;
+                forward = reshape(z, net.layers{i-1}.output_shape(1)*net.layers{i-1}.output_shape(2), []);
+                disp(size(forward'));
+                disp(size(net.weights{i-1}'));
+                a = forward' * net.weights{i-1}';
+                disp(size(a));
             else
                 a = net.weights{i-1} * z;% + net.biases{i-1};
             end
@@ -21,6 +21,7 @@ function [a_, z_] = forward_step_convFC(net, x)
             end
        end
        a_{i-1} = a;
+       
        z = net.activations{i-1}(a);
        z_{i-1} = z;
    end
