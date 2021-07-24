@@ -2,10 +2,10 @@ clear;
 
 
 TRAIN_SIZE = 1024;
-VALIDATION_SIZE = 512;
-EPOCHE = 150;
-ETA = 0.001;
-MOMENTUM = 0.8;
+VALIDATION_SIZE = 1024;
+EPOCHE = 400;
+ETA = 0.01;
+MOMENTUM = 0;
 %% Load Data
 
 load('X.mat');
