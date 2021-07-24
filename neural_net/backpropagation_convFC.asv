@@ -39,7 +39,7 @@ function [W_deriv] = backpropagation_convFC(net, x, t, derivFunErr)
             for k=1 : net.layers{i}.n_neurons : w_d(2)
                 for img=1 : batch_size
                     delta = net.weights{end-w}(:, k:k+net.layers{i}.n_neurons-1)' * deltas{i+1}(:, img);
-                    delta = delta .* net.deriv_func{end-a}(a_{end-a}(k:k+net.layers{i}.n_neurons-1,img));
+                    delta = delta .* net.deriv_func{end-a}(a_{end-a}(img, k:k+net.layers{i}.n_neurons-1))';
                     %disp(size(delta));
                     deltas{i}(:, c) = deltas{i}(:, c) + delta;
                 end
