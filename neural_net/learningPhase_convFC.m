@@ -78,7 +78,10 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
     y_val= z_{end}; %commentare per ric
     err(epoch) = errFunc(y, t); 
     err_val(epoch) = errFunc(y_val, t_val);
-    disp(['err train:' num2str(err(epoch)) ' err val:' num2str(err_val(epoch))]);
+   
+    disp(['err train:' num2str(err(epoch)) 9 ' err val:' num2str(err_val(epoch))]);
+    disp(['accuracy on train: ',num2str(accuracy(final_net,x,t)),'%' , 9 'accuracy on val: ' num2str(accuracy(final_net,x_val, t_val )), '%']);
+   disp('______________________________');
     if err_val(epoch)< min_err
         min_err=err_val(epoch);
         final_net = net;

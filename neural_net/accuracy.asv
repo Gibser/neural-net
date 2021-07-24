@@ -14,7 +14,7 @@ function [acc] = accuracy(net, imgs, trueValues)
         [m, ind] = max(softmax(arr{end}));
         n_pred = n_pred + (ind-1==trueValues(i));
     end
-    acc = (n_pred / length(trueValues))*100;
-    %disp([num2str(acc), '%']);
+    acc = (n_pred / length(trueValues));
+    disp([num2str(acc), '%');
 end
 
