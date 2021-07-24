@@ -12,6 +12,10 @@ function [a_, z_] = forward_step_convFC(net, x)
             else
                 a = net.weights{i-1} * z;% + net.biases{i-1};
             end
+            
+            if net.layers{i}.use_bias == 1
+               a = a + net.layers{i}.bias; 
+            end
        end
        a_{i-1} = a;
        z = net.activations{i-1}(a);

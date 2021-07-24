@@ -14,11 +14,16 @@ min_err = errFunc(y_val, t_val);
 disp(min_err);
 final_net = net;
 old_Deltas = {};
+old_Deltas_bias = {};
 
 for i=1 : net.n_layers-1
     old_Deltas{i} = zeros(size(net.weights{i}));
+    if net.layers{i+1}.use_bias == 1
+        old_Deltas_bias{i} = zeros(size(net.layers{i+1}.bias));
+    end
 end
 
+disp(old_Deltas_bias);
 for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
     %LEARNING ON-LINE
     ind=randperm(size(x,3));
@@ -31,13 +36,13 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
         for n=1:size(x,3)
             [w] = backpropagation_convFC(net, x(:,:,n), t(n, :), errFuncDeriv);
             %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
-            net = GDMomentum(net, w, old_Deltas, eta, momentum);
+            net = GDMomentum(net, w, old_Deltas, oldDeltas_bias, eta, momentum);
         end
     elseif BATCH==1
      %BATCH LEARNIG
-     [w] = backpropagation_convFC(net, x, t, errFuncDeriv);
+     [w, b] = backpropagation_convFC(net, x, t, errFuncDeriv);
      %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
-     net = GDMomentum(net, w, old_Deltas, eta, momentum);
+     [net, oldDeltas, oldDeltas_bias] = GDMomentum(net, w, b, old_Deltas, oldDeltas_bias, eta, momentum);
     elseif BATCH==2
         for k=1 : batch_size : size(x, 2)
             rand_index = floor((batch_size - 1) .* rand(1) + (1));
@@ -45,8 +50,8 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(:, :, k:k+batch_size-1), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k:k+batch_size-1), t(k:k+batch_size-1,:), errFuncDeriv);
             %[w] = backpropagation_convFC(net, x(:, :, k + rand_index), t(:, :, k + rand_index), errFuncDeriv); %SGD
-            [w] = backpropagation_convFC(net, x(:, :, k + rand_index), t(k + rand_index,:), errFuncDeriv); %SGD
-            [net, old_Deltas] = GDMomentum(net, w, old_Deltas, eta, momentum); 
+            [w, b] = backpropagation_convFC(net, x(:, :, k + rand_index), t(k + rand_index,:), errFuncDeriv); %SGD
+            [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum); 
         end       
     end
     

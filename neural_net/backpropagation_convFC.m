@@ -1,4 +1,4 @@
-function [W_deriv] = backpropagation_convFC(net, x, t, derivFunErr)
+function [W_deriv, bias_deriv] = backpropagation_convFC(net, x, t, derivFunErr)
     
     W_deriv = {};
     deltas = {};
@@ -26,7 +26,7 @@ function [W_deriv] = backpropagation_convFC(net, x, t, derivFunErr)
     a = 1; %Questo indice serve per gli input a dei neuroni nei livelli
     z = 2;
     %bias_deriv{net.n_layers-1} = sum(delta_out, 2);
-    %bias_deriv{net.n_layers-1} = delta_out;
+    bias_deriv{net.n_layers-1} = delta_out;
     %disp(size(delta_out));
     for i=net.n_layers-1 : -1: 2
         %disp(size(net.weights{end-w}));
@@ -65,6 +65,9 @@ function [W_deriv] = backpropagation_convFC(net, x, t, derivFunErr)
             deltas{i} = net.weights{end-w}' * deltas{i+1};
             deltas{i} = deltas{i} .* net.deriv_func{end-a}(a_{end-a});
             W_deriv{i-1} = deltas{i} * z_{end-z}';
+            if net.layers{i}.use_bias == 1
+                bias_deriv{i-1} = deltas{i};
+            end
         end
         %disp(size(deltas{i}));
         %disp(size(net.deriv_func{end-a}(a_{end-a})));

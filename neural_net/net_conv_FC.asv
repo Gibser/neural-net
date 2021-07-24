@@ -41,7 +41,6 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
            net.layers{i}.feature_map_dim = [H_out W_out net.layers{i}.n_neurons];    %Dimensione feature map (vedi paper)
            net.layers{i}.H_out = H_out;
            net.layers{i}.W_out = W_out;
-           net.layers{i}.use_bias = 0;
            
        elseif layers{i}.type == 1           %Livello full connected
            if layers{i-1}.type == 2         %se il layer precedente è convoluzionale allora devo cambiare i pesi
@@ -68,8 +67,6 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
            %disp(net.layers{i-1}.output_shape);
            flatten = reshape(randn(net.layers{i-1}.output_shape), net.layers{i-1}.output_shape(1)*net.layers{i-1}.output_shape(2), []);
            net.layers{i}.output_shape = size(net.weights{i-1} * flatten);
-           net.layers{i}.use_bias = 1;
-           net.layers{i}.bias = SIGMA*randn(net.layers{i}.n_neurons, 1);
        end
        %{
        if net.layers{i}.type == 2
