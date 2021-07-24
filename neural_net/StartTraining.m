@@ -31,7 +31,7 @@ layers2{2}.padding=0;
 %% load net
 
 net = net_conv_FC(layers2, {@relu, @identity}, {@reluDeriv, @identityDeriv}, 3);
-[err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @crossentropy, @softMaxCrossEntropyDeriv, 2, ETA, MOMENTUM, 128);
+[err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, ETA, MOMENTUM, 128);
 
 %% "GRID SEARCH" per eta e momentum
 min_val_err = err_val;

@@ -57,8 +57,8 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
     y=z2_{end}; %commentare per ric
     %y_val = reshape(z_{end}, 28, 28, []); decommentare per ric
     y_val= z_{end}; %commentare per ric
-    err(epoch) = errFunc(y,t); 
-    err_val(epoch) = errFunc(y_val,t_val);
+    err(epoch) = errFunc(y, t); 
+    err_val(epoch) = errFunc(y_val, t_val);
     disp(['err train:' num2str(err(epoch)) ' err val:' num2str(err_val(epoch))]);
     %{
     if err_val(epoch)< min_err
