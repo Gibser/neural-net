@@ -4,7 +4,7 @@ function [net, deltaW, deltaB] = GDMomentum(net, W_deriv, bias_deriv, Delta_prec
         net.weights{i} = net.weights{i} - deltaW{i};
         if net.layers{i+1}.use_bias == 1
            deltaB{i} = eta*bias_deriv{i} + momentum .* Delta_bias_prec{i};
-           net.bias{i+1} =  net.layers{i+1}.bias - deltaB{i};
+           net.layers{i+1}.bias =  net.layers{i+1}.bias - deltaB{i};
         end
     end
 end

@@ -15,17 +15,20 @@ disp(min_err);
 final_net = net;
 old_Deltas = {};
 old_Deltas_bias = {};
+sum_of_weights_gradients = {};
+sum_of_bias_gradients = {};
 
 for i=1 : net.n_layers-1
     old_Deltas{i} = zeros(size(net.weights{i}));
+    sum_of_weights_gradients{i} = zeros(size(net.weights{i}));
     if net.layers{i+1}.use_bias == 1
         old_Deltas_bias{i} = zeros(size(net.layers{i+1}.bias));
+        sum_of_bias_gradients{i} = zeros(size(net.layers{i+1}.bias));
     end
 end
 
 %disp(old_Deltas_bias);
-for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
-    %LEARNING ON-LINE
+for epoch=1:N 
     ind=randperm(size(x,3));
     x = x(:, :, ind);
     %t = t(:, :, ind); decommentare per ricostruzione
@@ -39,7 +42,7 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
             net = GDMomentum(net, w, old_Deltas, oldDeltas_bias, eta, momentum);
         end
     elseif BATCH==1
-     %BATCH LEARNIG
+     %BATCH LEARNING
      [w, b] = backpropagation_convFC(net, x, t, errFuncDeriv);
      %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
      [net, oldDeltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);
@@ -66,10 +69,11 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
             
             indexes_perm = randperm(batch_size, batch_size);     %Permutazione casuale delle immagini NEL batch
             %Solo permutazione batch
-            %[w, b] = backpropagation_convFC(net, x(:, :, indexes(1):indexes(2)), t(indexes(1):indexes(2),:), errFuncDeriv);
+            [w, b] = backpropagation_convFC(net, x(:, :, indexes(1):indexes(2)), t(indexes(1):indexes(2),:), errFuncDeriv);
             %Permutazione batch + permutazione immagini nel batch
-            [w, b] = backpropagation_convFC(net, x_batch(:, :, indexes_perm), t_batch(indexes_perm,:), errFuncDeriv); 
-            [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum); 
+            %[w, b] = backpropagation_convFC(net, x_batch(:, :, indexes_perm), t_batch(indexes_perm,:), errFuncDeriv); 
+            [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);       
+            %[net, sum_of_weights_gradients, sum_of_bias_gradients] = adagrad(net, w, b, eta, 1e-6, sum_of_weights_gradients, sum_of_bias_gradients);
         end       
     end
     
@@ -87,7 +91,7 @@ for epoch=1:N %In QUESTO CASO sto supponendo di fare sempre tutte le iterazioni
    
     disp(['err train:' num2str(err(epoch)) 9 ' err val:' num2str(err_val(epoch))]);
     disp(['accuracy on train: ',num2str(accuracy(final_net, x, vector_class_to_int_class(t))),'%' , 9 'accuracy on val: ' num2str(accuracy(final_net,x_val, vector_class_to_int_class(t_val) )), '%']);
-   disp('______________________________');
+    disp('______________________________');
     if err_val(epoch)< min_err
         min_err=err_val(epoch);
         final_net = net;
