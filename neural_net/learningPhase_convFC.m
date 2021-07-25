@@ -92,13 +92,8 @@ for epoch=1:N
     acc_tr(epoch)=accuracy(final_net, x, vector_class_to_int_class(t));
     acc_val(epoch)=accuracy(final_net,x_val, vector_class_to_int_class(t_val));
     disp(['err train:' num2str(err(epoch)) 9 ' err val:' num2str(err_val(epoch))]);
-<<<<<<< HEAD
-    disp(['accuracy on train: ',num2str(accuracy(final_net, x, vector_class_to_int_class(t))),'%' , 9 'accuracy on val: ' num2str(accuracy(final_net,x_val, vector_class_to_int_class(t_val) )), '%']);
-    disp('______________________________');
-=======
     disp(['accuracy on train: ',num2str(accuracy(final_net, x, vector_class_to_int_class(t))),'%' , 9 'accuracy on val: ' num2str(accuracy(final_net,x_val, vector_class_to_int_class(t_val))), '%']);
-   disp('______________________________');
->>>>>>> c0cef5e972748aca03813f882d9d4229b1605b5b
+    disp('______________________________');
     if err_val(epoch)< min_err
         min_err=err_val(epoch);
         final_net = net;
