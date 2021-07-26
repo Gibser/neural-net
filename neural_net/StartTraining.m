@@ -6,10 +6,10 @@ EPOCHE = 50;
 ETA = 0.0001;
 MOMENTUM = 0.8;
 BATCH_SIZE = 32;
-%% Load Data
 
-load('X.mat');
-load('Y.mat');
+%% Load Data
+load('X.mat');                  %Immagini MNIST
+load('Y.mat');                  %Labels MNIST
 
 XT = X(:,:,1:TRAIN_SIZE);
 YT = Y(1:TRAIN_SIZE);
@@ -20,45 +20,14 @@ YV = Y(TRAIN_SIZE+1:TRAIN_SIZE+VALIDATION_SIZE);
 
 YT = build_Y(YT);
 YV = build_Y(YV);
-%% Load layers
 
-load('2_dense_layers.mat');
-%{
-layers2{1}.dim=[28 28 1];
-layers2{3}.n_neurons = 10;
-layers2{2}.n_neurons = 128;
-layers2{2}.stride=2;
-layers2{2}.padding=0;
-%}
-%% load net
-err = 0;
-net = net_conv_FC(layers2, {@relu, @relu, @identity}, {@reluDeriv, @reluDeriv, @identityDeriv}, 4);
+%% Load layers
+load('layers2.mat');            %cell array per i livelli
+load('actvFunc.mat');           %cell array per le funzioni di attivazione
+load('actvFuncDeriv.mat');      %cell array per le derivate delle funzioni di attivazione
+
+%% Training
+net = net_conv_FC(layers2, actvFunc, actvFuncDeriv, 3);
 tic
 [err, final_net, err_val, acc_tr, acc_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, ETA, MOMENTUM, BATCH_SIZE);
 toc
-%% "GRID SEARCH" per eta e momentum
-min_val_err = err_val;
-best_net = final_net;
-best_eta = 0;
-best_momentum = 0;
-%{
-for eta=0:0.01:1
-    for momentum=0:1
-        [err, final_net, err_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, eta, momentum, 128);
-        if(err_val<min_val_err)
-            disp(['Best eta ', eta]);
-            disp(['Best momentum ', momentum]);
-            min_val_err = err_val;
-            best_net = final_net;
-            best_eta = eta;
-            best_momentum = momentum;
-        end
-    end
-end
-%}
-%TEST
-% [a,z] = forward_step_convFC(final_net, X(:,:,1));
-% z{2}
-% Y(1);
-% colormap gray
-% imagesc(X(:,:,1));
