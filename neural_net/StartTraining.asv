@@ -3,7 +3,7 @@ clear;
 
 %iper-parametri
 TRAIN_SIZE = 1024;
-VALIDATION_SIZE = 512;
+VALIDATION_SIZE = 256;
 EPOCHE = 50;
 ETA = 0.0001;
 MOMENTUM = 0.8;
@@ -33,18 +33,17 @@ load('actvFuncDeriv.mat');      %cell array per le derivate delle funzioni di at
 
 %% Stampa dei parametri di training
 disp('===============Training===================');
-disp(['Epoche: ', 9,9, 9, num2str(EPOCHE)]);
-disp(['Tipo di Training: ',9 num2str(TRAINING_TYPE)]);
+disp(['Epoche: ', 99 num2str(EPOCHE)]);
+disp(['Tipo di Training: ',9,9 num2str(TRAINING_TYPE)]);
 if(TRAINING_TYPE == 2)
-disp(['Grandezza batch: ',9 num2str(BATCH_SIZE)]);
+disp(['Grandezza batch: ',9,9 num2str(BATCH_SIZE)]);
 end
 disp('===============Iper-Parametri==============');
-disp(['Training Set: ',9 num2str(TRAIN_SIZE)]);
-disp(['Validation Set: ',  num2str(VALIDATION_SIZE)]);
-disp(['Learning Rate: ', 9 num2str(ETA)]);
-disp(['Momento: ', 9,9 num2str(MOMENTUM)]);
+disp(['Training Set: ',9,9 num2str(TRAIN_SIZE)]);
+disp(['Validation Set: ', 9,9 num2str(VALIDATION_SIZE)]);
+disp(['Learning Rate: ', 99 num2str(ETA)]);
+disp(['Momento: ', 99num2str(MOMENTUM)]);
 disp('===========================================');
-
 %% Training
 net = net_conv_FC(layers2, actvFunc, actvFuncDeriv, 3);
 tic

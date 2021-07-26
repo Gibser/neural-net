@@ -43,9 +43,8 @@ end
 for epoch=1:N 
     ind=randperm(size(x,3));
     x = x(:, :, ind);
-    t=t(ind,:);
-    disp('==================================');
-    disp(['Epoca corrente:' 9, 9, 9, num2str(epoch)]);
+    t=t(ind,:); 
+    disp(['epoch:' num2str(epoch)]);
     if BATCH==0
     %% ONLINE LEARNING
         for n=1:size(x,3)
@@ -75,30 +74,36 @@ for epoch=1:N
                 indexes_perm = randperm(batch_size, batch_size);%Permutazione casuale delle immagini NEL batch
                 %Solo permutazione batch
                 [w, b] = backpropagation_convFC(net, x(:, :, indexes(1):indexes(2)), t(indexes(1):indexes(2),:), errFuncDeriv);
+                %disp(size(b{2}));
                 %Permutazione batch + permutazione immagini nel batch
+                %[w, b] = backpropagation_convFC(net, x_batch(:, :, indexes_perm), t_batch(indexes_perm,:), errFuncDeriv); 
                 [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);       
             end  
         else
             [w, b] = backpropagation_convFC(net, x, t, errFuncDeriv);
-
+            
+              
         end
         [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);
+        %disp(size(net.layers{3}.bias));
     end
+    
+    %rand_index = floor((length(x) - 1) .* rand(1) + (1));
+    %rand_index_val = floor((length(x_val) - 1) .* rand(1) + (1));
     [~, z2_] = forward_step_convFC(net, x);
     [~, z_] = forward_step_convFC(net, x_val);
-
-    y=z2_{end}; 
-    y_val= z_{end}; 
+    
+    %y = reshape(z2_{end}, 28, 28, []); decommentare per ric
+    y=z2_{end}; %commentare per ric
+    %y_val = reshape(z_{end}, 28, 28, []); decommentare per ric
+    y_val= z_{end}; %commentare per ric
     err(epoch) = errFunc(y, t); 
     err_val(epoch) = errFunc(y_val, t_val);
     acc_tr(epoch)=accuracy(final_net, x, vector_class_to_int_class(t));
     acc_val(epoch)=accuracy(final_net,x_val, vector_class_to_int_class(t_val));
-    disp(['Errore di training:', 9 9 num2str(err(epoch))]);
-    disp(['Errore di validazione:',9 num2str(err_val(epoch))]);
-    disp(['Accuracy di training: ',9 num2str(accuracy(final_net, x, vector_class_to_int_class(t))),'%']);
-    disp(['Accuracy di validation: ', num2str(accuracy(final_net,x_val, vector_class_to_int_class(t_val))), '%']);
-    
-    %% Aggiornamento della rete migliore
+    disp(['err train:' num2str(err(epoch)) 9 ' err val:' num2str(err_val(epoch))]);
+    disp(['accuracy on train: ',num2str(accuracy(final_net, x, vector_class_to_int_class(t))),'%' , 9 'accuracy on val: ' num2str(accuracy(final_net,x_val, vector_class_to_int_class(t_val))), '%']);
+    disp('______________________________');
     if err_val(epoch)< min_err
         min_err=err_val(epoch);
         final_net = net;
