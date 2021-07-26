@@ -8,12 +8,9 @@ function [a_, z_] = forward_step_convFC(net, x)
        else
             if net.layers{i-1}.type == 2
                 forward = z;
-                %forward = reshape(z, net.layers{i-1}.output_shape(1)*net.layers{i-1}.output_shape(2), []);
-                %disp(size(forward));
-                %disp(size(net.weights{i-1}));
                 a = net.weights{i-1} * forward;
             else
-                a = net.weights{i-1} * z;% + net.biases{i-1};
+                a = net.weights{i-1} * z;
             end
             
             if net.layers{i}.use_bias == 1
