@@ -46,9 +46,9 @@ for epoch=1:N
     disp(['epoch:' num2str(epoch)]);
     if BATCH==0
         for n=1:size(x,3)
-            [w] = backpropagation_convFC(net, x(:,:,n), t(n, :), errFuncDeriv);
+            [w, b] = backpropagation_convFC(net, x(:,:,n), t(n, :), errFuncDeriv);
             %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
-            [net, oldDeltas, old_Deltas_bias] = GDMomentum(net, w, old_Deltas, old_Deltas_bias, eta, momentum);
+            [net, oldDeltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);
         end
     elseif BATCH==1
      %BATCH LEARNING

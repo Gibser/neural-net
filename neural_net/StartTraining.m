@@ -24,6 +24,7 @@ YV = Y(TRAIN_SIZE+1:TRAIN_SIZE+VALIDATION_SIZE);
 YT = build_Y(YT);
 YV = build_Y(YV);
 
+
 %% Carica i Layers della rete
 load('layers2.mat');            %cell array per i livelli
 load('actvFunc.mat');           %cell array per le funzioni di attivazione
@@ -32,5 +33,5 @@ load('actvFuncDeriv.mat');      %cell array per le derivate delle funzioni di at
 %% Training
 net = net_conv_FC(layers2, actvFunc, actvFuncDeriv, 3);
 tic
-[err, final_net, err_val, acc_tr, acc_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 2, ETA, MOMENTUM, BATCH_SIZE);
+[err, final_net, err_val, acc_tr, acc_val] = learningPhase_convFC(net, EPOCHE, XT, YT, XV, YV, @softMaxCrossEntropy, @softMaxCrossEntropyDeriv, 0, ETA, MOMENTUM, BATCH_SIZE);
 toc
