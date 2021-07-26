@@ -20,7 +20,9 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
     net.n_layers = n_layers;
     
     for i=2 : n_layers
-       if layers{i}.type == 2   %Livello convoluzionale     
+        
+       if layers{i}.type == 2     
+       %% Livello Convoluzionale
            if layers{i-1}.type ~= 0
                 H_out = ((net.layers{i-1}.output_shape(1) + 2*net.layers{i}.padding - net.layers{i}.dim(1)) / net.layers{i}.stride) + 1;
                 W_out = ((net.layers{i-1}.output_shape(2) + 2*net.layers{i}.padding - net.layers{i}.dim(2)) / net.layers{i}.stride) + 1;
@@ -35,15 +37,17 @@ function net = net_conv_FC(layers, actv_functions, deriv_func, n_layers)
            %he_uniform initialization for weights
            limit = sqrt(6 / size(flat_input, 1));       %limit = sqrt(6 / fan_in) (fan_in is the number of input units in the weight tensor)
            net.weights{i-1} = flatten_kernel(-limit + (limit+limit).*rand(layers{i}.dim(1), layers{i}.dim(2), layers{i}.n_neurons));
-           %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+       
            forward = flat_input*net.weights{i-1};
            net.layers{i}.output_shape = size(reshape(forward, H_out*W_out, net.layers{i}.n_neurons, []));
            net.layers{i}.feature_map_dim = [H_out W_out net.layers{i}.n_neurons];    %Dimensione feature map (vedi paper)
            net.layers{i}.H_out = H_out;
            net.layers{i}.W_out = W_out;
            net.layers{i}.use_bias = 0;
-           
-       elseif layers{i}.type == 1           %Livello full connected
+       
+       
+       elseif layers{i}.type == 1
+            %% livelo full connected  
            if layers{i-1}.type == 2         %se il layer precedente è convoluzionale allora devo cambiare i pesi
                 %cioé: ogni kernel genera una feature map di
                 %H_out*W_out*n_neurons in uscita, di conseguenza ogni
