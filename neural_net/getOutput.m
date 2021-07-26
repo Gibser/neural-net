@@ -1,4 +1,7 @@
 function getOutput(pred)
+%Restituisce una predizione a partire dall'output dell'ultimo livello della
+%rete
+%pred - array di output dell'ultimo livello della rete
     arr = softmax_function(pred);
     [p, index] = max(arr);
     arr(index) = 0;

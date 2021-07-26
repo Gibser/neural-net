@@ -1,5 +1,7 @@
+%Script per iniziare un training della rete
 clear;
 
+%iper-parametri
 TRAIN_SIZE = 2048;
 VALIDATION_SIZE = 2048;
 EPOCHE = 50;
@@ -7,22 +9,24 @@ ETA = 0.0001;
 MOMENTUM = 0.8;
 BATCH_SIZE = 32;
 
-%% Load Data
+%% Caricamento dei dati
 load('X.mat');                  %Immagini MNIST
 load('Y.mat');                  %Labels MNIST
 
+%% Definizione del training set e validation set
 XT = X(:,:,1:TRAIN_SIZE);
 YT = Y(1:TRAIN_SIZE);
 
 XV = X(:,:,TRAIN_SIZE+1:TRAIN_SIZE+VALIDATION_SIZE);
 YV = Y(TRAIN_SIZE+1:TRAIN_SIZE+VALIDATION_SIZE);
 
-
+%% Costruisce la one-hot encoding per i label degli insiemi
 YT = build_Y(YT);
 YV = build_Y(YV);
 
-%% Load layers
-load('layers.mat');            %cell array per i livelli
+
+%% Carica i Layers della rete
+load('layers2.mat');            %cell array per i livelli
 load('actvFunc.mat');           %cell array per le funzioni di attivazione
 load('actvFuncDeriv.mat');      %cell array per le derivate delle funzioni di attivazione
 
