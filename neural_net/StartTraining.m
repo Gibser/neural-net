@@ -3,7 +3,7 @@ clear;
 
 %iper-parametri
 TRAIN_SIZE = 1024;
-VALIDATION_SIZE = 256;
+VALIDATION_SIZE = 512;
 EPOCHE = 50;
 ETA = 0.0001;
 MOMENTUM = 0.8;
