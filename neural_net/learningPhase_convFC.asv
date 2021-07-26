@@ -27,7 +27,7 @@ for i=1 : net.n_layers-1
     end
 end
 
-disp(size(net.layers{3}.bias));
+%disp(old_Deltas_bias);
 for epoch=1:N 
     ind=randperm(size(x,3));
     x = x(:, :, ind);
@@ -39,13 +39,13 @@ for epoch=1:N
         for n=1:size(x,3)
             [w] = backpropagation_convFC(net, x(:,:,n), t(n, :), errFuncDeriv);
             %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
-            [net, oldDeltas, old_Deltas_bias] = GDMomentum(net, w, old_Deltas, old_Deltas_bias, eta, momentum);
+            net = GDMomentum(net, w, old_Deltas, oldDeltas_bias, eta, momentum);
         end
     elseif BATCH==1
      %BATCH LEARNING
      [w, b] = backpropagation_convFC(net, x, t, errFuncDeriv);
      %QUESTA REGOLA DI AGGIORNAMENTO SI PUO' SCEGLIERE
-     [net, oldDeltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum); 
+     [net, oldDeltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);
     elseif BATCH==2
         c = 1;
         for j = 1 : batch_size : length(x)
@@ -56,7 +56,7 @@ for epoch=1:N
         permutations = randperm(size(intervals, 2), size(intervals, 2));
         int_perm = intervals(:, permutations);
         %disp(int_perm);
-        if batch_size ~= length(x)
+        if batch_size ~ length(x)
             for k=1 : length(int_perm)
                 indexes = int_perm(:, k);                               %Permutazione casuale dei batch
                 x_batch = x(:, :, indexes(1):indexes(2));
@@ -65,18 +65,14 @@ for epoch=1:N
                 indexes_perm = randperm(batch_size, batch_size);     %Permutazione casuale delle immagini NEL batch
                 %Solo permutazione batch
                 [w, b] = backpropagation_convFC(net, x(:, :, indexes(1):indexes(2)), t(indexes(1):indexes(2),:), errFuncDeriv);
-                %disp(size(b{2}));
                 %Permutazione batch + permutazione immagini nel batch
                 %[w, b] = backpropagation_convFC(net, x_batch(:, :, indexes_perm), t_batch(indexes_perm,:), errFuncDeriv); 
                 [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);       
             end  
         else
-            [w, b] = backpropagation_convFC(net, x, t, errFuncDeriv);
-            
-              
+            [w, b] = backpropagation_convFC(net, x(:, :, indexes(1):indexes(2)), t(indexes(1):indexes(2),:), errFuncDeriv);
+            [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);   
         end
-        [net, old_Deltas, old_Deltas_bias] = GDMomentum(net, w, b, old_Deltas, old_Deltas_bias, eta, momentum);
-        %disp(size(net.layers{3}.bias));
     end
     
     %rand_index = floor((length(x) - 1) .* rand(1) + (1));
