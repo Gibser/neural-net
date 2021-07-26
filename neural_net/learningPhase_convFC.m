@@ -21,7 +21,6 @@ y_val=z_{end}; %commentare per ricostruzione immagini
 %disp(size(y_val));
 %disp(size(t_val));
 min_err = errFunc(y_val, t_val);
-disp(min_err);
 final_net = net;
 old_Deltas = {};
 old_Deltas_bias = {};
