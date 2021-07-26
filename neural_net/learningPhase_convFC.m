@@ -1,8 +1,17 @@
 function [err, final_net, err_val, acc_tr, acc_val] = learningPhase_convFC(net, N, x, t, x_val, t_val, errFunc, errFuncDeriv, BATCH, eta, momentum, batch_size)
-         %Learning rate e' un parametro che posso scegliere, e relativo alla regola di aggiornamento
-         % scelta, ed è considerato un iper-parametro del processo di
-         % learning. In genere passato come parametro alla funzione.
-         %Apprendimento Batch (1) oppure on-line (0). In genere come parametro della funzione
+%Funzione che eseguie la fase di learning per la rete
+% net - rete
+% N - numero epoche
+% x - training set
+% t - target del training set
+% x_val - validation set
+% t_val - target validation set
+% errFunc - funzione di errore
+% errFunDeri - derivata della funzione di errore
+% BATCH - learning di tipo (1) ONLINE, (2) BATCH, (3) MINI-BATCH
+% eta - learning rate
+% momentum - momento
+% batch_size - grandezza del batch
 err = zeros(1,N);
 err_val = zeros(1,N);
 [~, z_] = forward_step_convFC(net, x_val);
