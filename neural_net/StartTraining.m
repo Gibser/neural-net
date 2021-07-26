@@ -44,6 +44,7 @@ disp(['Validation Set: ',  num2str(VALIDATION_SIZE)]);
 disp(['Learning Rate: ', 9 num2str(ETA)]);
 disp(['Momento: ', 9,9 num2str(MOMENTUM)]);
 disp('===========================================');
+
 %% Training
 net = net_conv_FC(layers2, actvFunc, actvFuncDeriv, 3);
 tic

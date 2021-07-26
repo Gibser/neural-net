@@ -43,8 +43,9 @@ end
 for epoch=1:N 
     ind=randperm(size(x,3));
     x = x(:, :, ind);
-    t=t(ind,:); 
-    disp(['epoch:' num2str(epoch)]);
+    t=t(ind,:);
+    disp('==================================');
+    disp(['Epoca corrente:' 9, 9, 9, num2str(epoch)]);
     if BATCH==0
     %% ONLINE LEARNING
         for n=1:size(x,3)
@@ -92,9 +93,11 @@ for epoch=1:N
     err_val(epoch) = errFunc(y_val, t_val);
     acc_tr(epoch)=accuracy(final_net, x, vector_class_to_int_class(t));
     acc_val(epoch)=accuracy(final_net,x_val, vector_class_to_int_class(t_val));
-    disp(['err train:' num2str(err(epoch)) 9 ' err val:' num2str(err_val(epoch))]);
-    disp(['accuracy on train: ',num2str(accuracy(final_net, x, vector_class_to_int_class(t))),'%' , 9 'accuracy on val: ' num2str(accuracy(final_net,x_val, vector_class_to_int_class(t_val))), '%']);
-    disp('______________________________');
+    disp(['Errore di training:', 9 9 num2str(err(epoch))]);
+    disp(['Errore di validazione:',9 num2str(err_val(epoch))]);
+    disp(['Accuracy di training: ',9 num2str(accuracy(final_net, x, vector_class_to_int_class(t))),'%']);
+    disp(['Accuracy di validation: ', num2str(accuracy(final_net,x_val, vector_class_to_int_class(t_val))), '%']);
+    
     %% Aggiornamento della rete migliore
     if err_val(epoch)< min_err
         min_err=err_val(epoch);
