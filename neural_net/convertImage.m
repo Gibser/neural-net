@@ -4,10 +4,10 @@ function [I] = convertImage(filename)
 % essere usata per il training
 % filename - la STRINGA contenente il path dell'immagine 
 % I - restituisce la matrice corrispondente all'immagine grayscale
-RGB = imread(filename);
-RGB = imresize(RGB,[28,28]);
-I = rgb2gray(RGB);
-I = normalize(I, 'range');
-colormap gray;
-imagesc(I);
+    RGB = imread(filename);
+    RGB = imresize(RGB,[28,28]);
+    I = rgb2gray(RGB);
+    I = normalize(I, 'range');
+    colormap gray;
+    imagesc(I);
 end
