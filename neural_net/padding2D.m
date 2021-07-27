@@ -1,4 +1,7 @@
 function [padded_img] = padding2D(input, pad)
+% Effettua il padding di un'immagine
+% input - Immagine dove mettere il padding
+% pad - numero intero che identifica quanto padding introdurre
     if pad < 0
        throw(MException('myComponent:inputError', 'Padding non valido'));
     end
