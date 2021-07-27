@@ -4,7 +4,7 @@ clear;
 %iper-parametri
 TRAIN_S_SIZE = 512;
 VALIDATION_S_SIZE = 512;
-EPOCHES = 10;
+EPOCHES = 20;
 ETA = 0.0001;
 MOMENTUM = 0.8;
 BATCH_SIZE = 32;
@@ -19,14 +19,14 @@ load('Y.mat');                  %Labels CatsVsDogs
 
 %% Definizione del training set e validation set
 XT = X(:,:,1:TRAIN_S_SIZE);
-YT = Y(1:TRAIN_S_SIZE);
+YT = Y(1:TRAIN_S_SIZE,:);
 
 XV = X(:,:,TRAIN_S_SIZE+1:TRAIN_S_SIZE+VALIDATION_S_SIZE);
-YV = Y(TRAIN_S_SIZE+1:TRAIN_S_SIZE+VALIDATION_S_SIZE);
+YV = Y(TRAIN_S_SIZE+1:TRAIN_S_SIZE+VALIDATION_S_SIZE,:);
 
 %% Costruisce la one-hot encoding per i label degli insiemi
-%YT = build_Y(YT);
-%YV = build_Y(YV);
+YT = build_Y(YT);
+YV = build_Y(YV);
 % Y è già salvato come one-hot encoding, questo passaggio non serve
 
 %% Carica i Layers della rete
